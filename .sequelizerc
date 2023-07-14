@@ -1,0 +1,21 @@
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/image');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage
+});
+
+module.exports = {
+  config: path.resolve(__dirname, 'src', 'config', 'database.js'),
+  'migrations-path': path.resolve(__dirname, 'src', 'database', 'migrations'),
+  upload: upload // Adicione essa linha para exportar o objeto 'upload'
+};
